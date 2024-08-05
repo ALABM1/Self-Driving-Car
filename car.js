@@ -14,8 +14,12 @@ class Car{
         this.controls= new Controls();
     }
     update(){
-         // If the forward control is active, increase speed by the acceleration value
-        if(this.controls.forward){
+       this.#move();
+    
+    }
+    #move(){
+          // If the forward control is active, increase speed by the acceleration value
+          if(this.controls.forward){
             this.speed+=this.acceleration;
              // this.y-=2;
         }
@@ -61,7 +65,6 @@ class Car{
         this.y-=Math.cos(this.angle)*this.speed; // Math.cos(this.angle) gives the proportion of the speed in the vertical direction.
         
        
-    
     }
     draw(ctx){
         ctx.save();
