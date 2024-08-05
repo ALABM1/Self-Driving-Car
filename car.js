@@ -17,7 +17,7 @@ class Car{
          // If the forward control is active, increase speed by the acceleration value
         if(this.controls.forward){
             this.speed+=this.acceleration;
-            // this.y-=2;
+             // this.y-=2;
         }
          // If the reverse control is active, decrease speed by the acceleration value
         if(this.controls.reverse){
