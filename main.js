@@ -3,7 +3,7 @@ canvas.width=200;
 const ctx= canvas.getContext("2d");
 const road= new Road(canvas.width/2,canvas.width*0.9); // Create a new Road object centered on the canvas and occupying 90% of the canvas width
 const car = new Car (road.getLaneCenter(1),100, 30,50); // Create a new Car object, placing it in the center of the second lane
-car.draw(ctx); // Draw the initial state of the car
+//car.draw(ctx); // Draw the initial state of the car
 
 animate(); // Start the animation loop
 
