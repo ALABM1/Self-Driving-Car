@@ -30,6 +30,7 @@ class Sensor{
             this.rays.push([start,end]);
         }
     }
+    //now Draw the Rays
     draw(ctx){
         for(let i=0;i<this.rayCount;i++){
             ctx.beginPath();
@@ -44,6 +45,7 @@ class Sensor{
                 this.rays[i][1].y
             );
             ctx.stroke();
+            
 
         }
     }
