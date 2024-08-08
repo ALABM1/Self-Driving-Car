@@ -16,8 +16,32 @@ class Car{
     }
     update(roadBorders){
        this.#move();
+       this.polygon=this.#createPolygon();
        this.sensor.update(roadBorders);
     
+    }
+    #createPolygon(){
+        const points=[]; // empty array to store the points of the polygon
+        const rad =Math.hypot(this.width,this.height)/2; // Calculate the radius of the bounding circle for the car
+        const alpha=Math.atan2(this.width,this.height);  // Calculate the angle for the corners of the car relative to its center
+        // Calculate the four corners of the car's polygon representation
+        points.push({
+            x:this.x-Math.sin(this.angle-alpha)*rad,
+            y:this.y-Math.cos(this.angle-alpha)*rad 
+        })
+        points.push({
+            x:this.x-Math.sin(this.angle+alpha)*rad,
+            y:this.y-Math.cos(this.angle+alpha)*rad 
+        })
+        points.push({
+            x:this.x-Math.sin(Math.PI+this.angle-alpha)*rad,
+            y:this.y-Math.cos(Math.PI+this.angle-alpha)*rad 
+        })
+        points.push({
+            x:this.x-Math.sin(Math.PI+this.angle+alpha)*rad,
+            y:this.y-Math.cos(Math.PI+this.angle+alpha)*rad 
+        })
+        return points;
     }
     #move(){
           // If the forward control is active, increase speed by the acceleration value
