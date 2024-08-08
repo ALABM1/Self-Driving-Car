@@ -10,9 +10,9 @@ animate(); // Start the animation loop
 
 function animate(){
     for(let i=0;i<traffic.length;i++){
-        traffic[i].update(road.borders);
+        traffic[i].update(road.borders,[]);
     }
-    car.update(road.borders); // Update the car's position and state
+    car.update(road.borders,traffic); // Update the car's position and state
 
     canvas.height=window.innerHeight; // Set the canvas height to the viewport height.
     ctx.save();

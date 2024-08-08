@@ -11,28 +11,38 @@ class Car{
         this.friction=0.05; //احتكاك
         this.angle=0;
         this.damage=false;
-
-        this.sensor= new Sensor(this);
+        if(controlType != "DUMMY"){
+            this.sensor= new Sensor(this);
+        }
+       
         this.controls= new Controls(controlType);
     }
-    update(roadBorders){
+    update(roadBorders,traffic){
      
         if(!this.damage){ // if damage is false (the car did not hit the border)
             this.#move();
             this.polygon=this.#createPolygon();
-            this.damage=this.#assesDamage(roadBorders); // check if the car did hit the border or not (if it did then the car stop)
-            this.sensor.update(roadBorders);
+            this.damage=this.#assesDamage(roadBorders,traffic); // check if the car did hit the border or not (if it did then the car stop)
            }
-           this.sensor.update(roadBorders);
+        if(this.sensor){
+           this.sensor.update(roadBorders,traffic);
+        }
       
     }
     //check if the car's polygon intersects with any of the road borders
-    #assesDamage(roadBorders){
+    #assesDamage(roadBorders,traffic){
         // Loop through each road border
         for(let i=0;i<roadBorders.length;i++){
             //check if the car's polygon interrsects with the current road border
             if(polysIntersect(this.polygon,roadBorders[i])){
                 return true; //indicating  damage
+            }
+        }
+         // Loop through each traffic cars
+         for(let i=0;i<traffic.length;i++){
+            //check if the car's polygon interrsects with the cars of traffic
+            if(polysIntersect(this.polygon,traffic[i].polygon)){
+                return true; //indicating  that the main car hit the car of traffic
             }
         }
         return false; //indicating no damage
@@ -125,7 +135,9 @@ class Car{
             ctx.lineTo(this.polygon[i].x,this.polygon[i].y);  // Draw lines to each subsequent point of the polygon
         }
         ctx.fill(); // Fill the polygon to render the car
-        ctx.restore();
-        this.sensor.draw(ctx);
+        // ctx.restore();
+        if(this.sensor){ // if there is a sensor
+            this.sensor.draw(ctx);
+        }
     }
 }
