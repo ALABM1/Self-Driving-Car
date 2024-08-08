@@ -10,15 +10,32 @@ class Car{
         this.maxSpeed=3;
         this.friction=0.05; //احتكاك
         this.angle=0;
+        this.damage=false;
 
         this.sensor= new Sensor(this);
         this.controls= new Controls();
     }
     update(roadBorders){
-       this.#move();
-       this.polygon=this.#createPolygon();
+       if(!this.damage){
+        this.#move();
+        this.polygon=this.#createPolygon();
+        this.damage=this.#assesDamage(roadBorders);
+        this.sensor.update(roadBorders);
+       }
        this.sensor.update(roadBorders);
     
+    }
+    //check if the car's polygon intersects with any of the road borders
+    #assesDamage(roadBorders){
+        // Loop through each road border
+        for(let i=0;i<roadBorders.length;i++){
+            //check if the car's polygon interrsects with the current road border
+            if(polysIntersect(this.polygon,roadBorders[i])){
+                return true; //indicating  damage
+            }
+        }
+        return false; //indicating no damage
+        
     }
     #createPolygon(){
         const points=[]; // empty array to store the points of the polygon
@@ -94,8 +111,13 @@ class Car{
        
     }
     draw(ctx){
-      
+        
         ctx.save();
+        if(this.damage){
+            ctx.fillStyle="gray";
+        }else{
+            ctx.fillStyle="black";
+        }
         ctx.beginPath();
         ctx.moveTo(this.polygon[0].x,this.polygon[0].y); // Move to the first point of the polygon
         for(let i=1; i<this.polygon.length;i++){
