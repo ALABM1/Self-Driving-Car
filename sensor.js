@@ -9,7 +9,7 @@ class Sensor{
         this.readings=[]; // some values for each ray telling if there is a border
 
     }
-    update(roadBorders){
+    update(roadBorders,traffic){
        this.#castRays(); // call the private method to cast rays in the direction the car is facing.
        // Initialize an empty array to store the readings from each ray.
        this.readings=[];
@@ -17,12 +17,12 @@ class Sensor{
        for(let i=0; i<this.rays.length;i++){
             // Push the closest intersection point or null (if no intersection) into the readings array.
             this.readings.push(
-                this.#getReading(this.rays[i],roadBorders)
+                this.#getReading(this.rays[i],roadBorders,traffic)
             );
        }
     }
     // function return the intersections point or null . The format returned is an object containing x,y,offset
-    #getReading(ray,roadBorders){
+    #getReading(ray,roadBorders,traffic){
         let touches=[]; //touches: An array of intersection points where each point is an object containing properties  x, y, and offset.
 
         for(let i=0;i<roadBorders.length;i++){
@@ -34,6 +34,21 @@ class Sensor{
             );
             if(touch){
                 touches.push(touch);
+            }
+        }
+        // Iterate over each traffic object in the traffic array.
+        for(let i=0;i<traffic.length;i++){
+            const poly=traffic[i].polygon;    // Get the polygon (shape) of the current traffic object.
+            for(let j=0;j<poly.length;j++){   // Iterate over each edge of the polygon.
+                const value = getIntersection(
+                    ray[0], // Start point of the ray
+                    ray[1], // End point of the ray
+                    poly[j],                // Start point of the polygon edge
+                    poly[(j+1)%poly.length] // End point of the polygon edge (wraps around to the first point for the last edge)
+                )
+                if(value){
+                    touches.push(value);
+                }
             }
         }
         if(touches.length==0){

@@ -121,13 +121,13 @@ class Car{
         
        
     }
-    draw(ctx){
+    draw(ctx,color){
         
         ctx.save();
         if(this.damage){
             ctx.fillStyle="gray";
         }else{
-            ctx.fillStyle="black";
+            ctx.fillStyle=color;
         }
         ctx.beginPath();
         ctx.moveTo(this.polygon[0].x,this.polygon[0].y); // Move to the first point of the polygon

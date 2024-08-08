@@ -21,9 +21,9 @@ function animate(){
     //the car's y position appears at a fixed point on the screen, specifically 70% down from the top of the canvas.
     road.draw(ctx);
     for(let i=0;i<traffic.length;i++){
-        traffic[i].draw(ctx);
+        traffic[i].draw(ctx,"red");
     }
-    car.draw(ctx);
+    car.draw(ctx,"blue");
 
     ctx.restore();
     requestAnimationFrame(animate); // Request the next frame to create an animation loop.
