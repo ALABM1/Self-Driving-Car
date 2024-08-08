@@ -10,9 +10,12 @@ class Sensor{
 
     }
     update(roadBorders){
-       this.#castRays(); // call the private method to cast rays
+       this.#castRays(); // call the private method to cast rays in the direction the car is facing.
+       // Initialize an empty array to store the readings from each ray.
        this.readings=[];
+       // Loop through each ray and get the closest intersection point with the road borders.
        for(let i=0; i<this.rays.length;i++){
+            // Push the closest intersection point or null (if no intersection) into the readings array.
             this.readings.push(
                 this.#getReading(this.rays[i],roadBorders)
             );
@@ -82,8 +85,8 @@ class Sensor{
             );
             // Draw a line to the end point of the ray
             ctx.lineTo(
-                end.x,
-                end.y
+                end.x, 
+                end.y  
             );
             ctx.stroke(); // Render the ray
 
@@ -94,13 +97,14 @@ class Sensor{
 
              // Move to the start point of the ray
             ctx.moveTo( 
-                this.rays[i][1].x, // x-coordinate of the start point
-                this.rays[i][1].y  // y-coordinate of the start point
+                end.x,
+                end.y
             );
             // Draw a line to the end point of the ray
             ctx.lineTo(
-                end.x,
-                end.y
+                this.rays[i][1].x, // x-coordinate of the start point
+                this.rays[i][1].y  // y-coordinate of the start point
+                
             );
             ctx.stroke(); // Render the ray
             

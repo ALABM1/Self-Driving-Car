@@ -1,11 +1,19 @@
 class Controls{
-    constructor(){
+    constructor(controlType){
         this.forward=false;
         this.left=false;
         this.right=false;
         this.reverse=false; 
 
-        this.#addKeyboardListeners(); // we add # because it is a private method
+        // if controlType="KEYS" then it is our main car to be controlled by user otherwise it is a dummy car
+        switch(controlType){
+            case "KEYS":
+                this.#addKeyboardListeners();
+                break;
+            case "DUMMY":
+                this.forward=true;
+                break;
+        }
     }
     #addKeyboardListeners(){
         document.onkeydown=(event)=>{

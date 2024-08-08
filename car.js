@@ -1,5 +1,5 @@
 class Car{
-    constructor(x,y,width,height){
+    constructor(x,y,width,height,controlType, maxSpeed=3){
         this.x=x;
         this.y=y;
         this.width=width;
@@ -7,23 +7,24 @@ class Car{
 
         this.speed=0;
         this.acceleration=0.3;
-        this.maxSpeed=3;
+        this.maxSpeed=maxSpeed;
         this.friction=0.05; //احتكاك
         this.angle=0;
         this.damage=false;
 
         this.sensor= new Sensor(this);
-        this.controls= new Controls();
+        this.controls= new Controls(controlType);
     }
     update(roadBorders){
-       if(!this.damage){
-        this.#move();
-        this.polygon=this.#createPolygon();
-        this.damage=this.#assesDamage(roadBorders);
-        this.sensor.update(roadBorders);
-       }
-       this.sensor.update(roadBorders);
-    
+     
+        if(!this.damage){ // if damage is false (the car did not hit the border)
+            this.#move();
+            this.polygon=this.#createPolygon();
+            this.damage=this.#assesDamage(roadBorders); // check if the car did hit the border or not (if it did then the car stop)
+            this.sensor.update(roadBorders);
+           }
+           this.sensor.update(roadBorders);
+      
     }
     //check if the car's polygon intersects with any of the road borders
     #assesDamage(roadBorders){
