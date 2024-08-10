@@ -23,5 +23,22 @@ class Level {
             level.biases[i]=Math.random()*2-1;
         }
     }
+    static feedForward(givenInputs,level){
+        for(let i=0;i<level.inputs.length;i++){
+            level.inputs[i]=givenInputs[i]; //the values that comes from the sensors
+        }
+        for(let i=0;i<level.outputs.length;i++){ //for every output i
+            let sum=0;
+            for(let j=0;j<level.inputs.length;i++){  // for every input j
+                sum+=level.inputs[j] * level.weights[j][i] // input[j]*weight[j][i]  (j input and i output)
+            }
+            if(sum>level.biases[i]) { //if the sum > biase of this output neuron
+                level.outputs[i]=1; // turn it on 
+            }else{
+                level.outputs[i]=0; // turn it off
+            }
+        }
+        return level.outputs;
+    }
 
 }
