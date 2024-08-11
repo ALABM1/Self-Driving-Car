@@ -11,8 +11,14 @@ class Car{
         this.friction=0.05; //احتكاك
         this.angle=0;
         this.damage=false;
+
+        this.useBrain=controlType=="AI";
+
         if(controlType != "DUMMY"){
-            this.sensor= new Sensor(this);
+            this.sensor= new Sensor(this); // Initialize the sensor for detecting road borders and obstacles
+            this.brain=new NeuralNetwork(
+                [this.sensor.rayCount,6,4] // Initialize the neural network with the structure: rayCount inputs, 6 hidden neurons, and 4 output neurons
+            )
         }
        
         this.controls= new Controls(controlType);
@@ -21,12 +27,29 @@ class Car{
      
         if(!this.damage){ // if damage is false (the car did not hit the border)
             this.#move();
-            this.polygon=this.#createPolygon();
+            this.polygon=this.#createPolygon(); // Update the car's polygon (shape)
             this.damage=this.#assesDamage(roadBorders,traffic); // check if the car did hit the border or not (if it did then the car stop)
            }
         if(this.sensor){
-           this.sensor.update(roadBorders,traffic);
+           this.sensor.update(roadBorders,traffic); // Update the sensor readings based on the road borders and traffic
+           const offsets=this.sensor.readings.map(
+            s=>s==null?0:1-s.offset // Convert sensor readings to offsets for the neural network (0 if no reading, or the inverse of the offset)
+            // here is an entire explanation about the usage of offset :
+            //In the line s==null?0:1-s.offset, the code checks if there is a valid sensor reading (s):
+                //If there is no intersection (s == null), the offset is set to 0, indicating no detected obstacle in that direction.
+                //If there is an intersection, the offset is transformed by calculating 1 - s.offset, where s.offset is subtracted from 1 to invert the value. This inversion is done because a higher value should indicate proximity to an obstacle (e.g., 1 - 0.1 = 0.9 for a nearby obstacle).
+           )
+           const outputs=NeuralNetwork.feedForward(offsets,this.brain); // Pass the offsets through the neural network to get the outputs
+        //    console.log(outputs);
+           if(this.brain){
+            this.controls.forward=outputs[0]; // Use the first output neuron to control forward movement
+            this.controls.reverse=outputs[3];
+            this.controls.left=outputs[1];
+            this.controls.right=outputs[2];
+
         }
+        }
+        
       
     }
     //check if the car's polygon intersects with any of the road borders
