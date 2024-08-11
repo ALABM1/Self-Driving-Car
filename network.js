@@ -1,3 +1,32 @@
+class NeuralNetwork{
+    constructor(neuronCounts){ // neuronCounts is an Array (the number of neurons of each layer)
+        this.levels=[]; // Array to hold the layers (levels) of the neural network
+        // Loop through the neuronCounts array to create each level (layer) of the network
+        for(let i=0; i<neuronCounts.length-1;i++){
+            // Create a new Level instance for each layer and push it into the levels array
+            this.levels.push(new Level(
+                neuronCounts[i],   // number of neurons in the current layer (inputCount)
+                neuronCounts[i+1] //  number of neurons in the next layer (outputCount) 
+            ));;
+        }
+    }
+   // Static method to perform a forward pass through the entire network
+   static feedForward(givenInputs,network) {
+    // Process the given inputs through the first layer
+    let outputs=Level.feedForward(
+        givenInputs,       // Input values to the network
+        network.levels[0] // the first layer of the network
+    );
+    // Process the outputs through each layer
+    for(let i=1; i<network.levels.length; i++ ){
+        outputs=Level.feedForward(
+            outputs,           // outputs from the previous layer
+            network.levels[i] // the next layer to process
+         );
+    }
+    return outputs;
+   }
+}
 class Level {
     constructor(inputCount, outputCount){
         this.inputs= new Array(inputCount);
@@ -23,19 +52,20 @@ class Level {
             level.biases[i]=Math.random()*2-1;
         }
     }
+
     static feedForward(givenInputs,level){
-        for(let i=0;i<level.inputs.length;i++){
+        for(let i=0; i<level.inputs.length; i++){
             level.inputs[i]=givenInputs[i]; //the values that comes from the sensors
         }
         for(let i=0;i<level.outputs.length;i++){ //for every output i
             let sum=0;
-            for(let j=0;j<level.inputs.length;i++){  // for every input j
+            for(let j=0; j<level.inputs.length; j++){  // for every input j
                 sum+=level.inputs[j] * level.weights[j][i] // input[j]*weight[j][i]  (j input and i output)
             }
-            if(sum>level.biases[i]) { //if the sum > biase of this output neuron
-                level.outputs[i]=1; // turn it on 
+            if(sum>level.biases[i]) {// Compare the weighted sum with the bias of this output neuron
+                level.outputs[i]=1;  // If the sum is greater than the bias, output is 1 (activated)
             }else{
-                level.outputs[i]=0; // turn it off
+                level.outputs[i]=0; // Otherwise, output is 0 (not activated)
             }
         }
         return level.outputs;
