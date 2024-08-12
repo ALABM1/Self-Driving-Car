@@ -18,6 +18,7 @@ class Car{
             this.sensor= new Sensor(this); // Initialize the sensor for detecting road borders and obstacles
             this.brain=new NeuralNetwork(
                 [this.sensor.rayCount,6,4] // Initialize the neural network with the structure: rayCount inputs, 6 hidden neurons, and 4 output neurons
+                // we have 5 Ray so we have in the first layer 5 inputs
             )
         }
        
