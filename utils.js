@@ -45,3 +45,11 @@ function getIntersection(A,B,C,D){
     }
     return false; //indicating the polygons do not intersect
  }
+ function getRGBA(value){
+
+    const alpha=Math.abs(value);
+    const R=value<0?0 : 255; // if value>0 then it's Red
+    const G=R;
+    const B=value<0?255: 0; // if value <0 then it's Blue
+    return "rgba("+R+","+G+","+B+","+alpha+")"; //Set the color of the line to orange
+ }

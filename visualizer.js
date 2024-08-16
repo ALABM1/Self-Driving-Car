@@ -18,7 +18,7 @@ class Visualizer{
         const right= left+width;
         const bottom= top+height;
 
-        const {inputs,outputs}=level;
+        const {inputs,outputs,weights,biases}=level;
          //The section of code you shared is responsible for drawing the connections (lines) :
         ////////////////////////////////////////////////////
         for(let i=0;i<inputs.length;i++){ //Loop throw each input neuron
@@ -34,7 +34,12 @@ class Visualizer{
                     top // set y-coordinate to the top of the layer (where outputs are drawn)
                 );
                 ctx.lineWidth=2; //Set the width of the line to 2 pixels
-                ctx.strokeStyle="orange"; //Set the color of the line to orange
+                const value=weights[i][j];
+                const alpha=Math.abs(value);
+                const R=value<0?0 : 255; // if value>0 then it's Red
+                const G=R;
+                const B=value<0?255: 0; // if value <0 then it's Blue
+                ctx.strokeStyle="rgba("+R+","+G+","+B+","+alpha+")"; //Set the color of the line to orange
                 ctx.stroke(); // Draw the line connecting the input to the output neurons
                 
 
@@ -52,10 +57,18 @@ class Visualizer{
                 inputs.length==1?0.5 : i/(inputs.length-1) // Center if there's one input, otherwise distribute evenly
             );
             // Begin drawing the neuron (node) as a circle
+
             ctx.beginPath();
             ctx.arc(x,bottom,nodeRadius,0,Math.PI*2);  // Draw a circle at (x, bottom) with the specified radius
+            ctx.fillStyle="black", // Set the fill color of the neuron to white
+            ctx.fill(); // Fill the circle with the white color
+            
+            ctx.beginPath();
+            ctx.arc(x,bottom,nodeRadius*0.6,0,Math.PI*2);  // Draw a circle at (x, bottom) with the specified radius
             ctx.fillStyle="white", // Set the fill color of the neuron to white
             ctx.fill(); // Fill the circle with the white color
+
+            
         }
         
         for(let i=0;i<level.outputs.length;i++){
@@ -68,8 +81,22 @@ class Visualizer{
             // Begin drawing the neuron (node) as a circle
             ctx.beginPath();
             ctx.arc(x,top,nodeRadius,0,Math.PI*2);  // Draw a circle at (x, bottom) with the specified radius
+            ctx.fillStyle="black", // Set the fill color of the neuron to white
+            ctx.fill(); // Fill the circle with the white color
+
+            ctx.beginPath();
+            ctx.arc(x,top,nodeRadius*0.6,0,Math.PI*2);  // Draw a circle at (x, bottom) with the specified radius
             ctx.fillStyle="white", // Set the fill color of the neuron to white
             ctx.fill(); // Fill the circle with the white color
+
+            //Draw the biases
+            ctx.beginPath();
+            ctx.lineWidth=2;
+            ctx.arc(x,top,nodeRadius*0.8,0,Math.PI*2);
+            ctx.strokeStyle=getRGBA(biases[i]);
+            ctx.setLineDash([3,3]);
+            ctx.stroke();
+            ctx.setLineDash([]);
         }
        
     }
