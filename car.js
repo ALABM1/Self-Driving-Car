@@ -145,7 +145,7 @@ class Car{
         
        
     }
-    draw(ctx,color){
+    draw(ctx,color,drawSensor=false){
         
         ctx.save();
         if(this.damage){
@@ -160,7 +160,7 @@ class Car{
         }
         ctx.fill(); // Fill the polygon to render the car
         // ctx.restore();
-        if(this.sensor){ // if there is a sensor
+        if(this.sensor && drawSensor==true){ // if there is a sensor and drawSensor is true 
             this.sensor.draw(ctx);
         }
     }
