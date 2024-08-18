@@ -1,5 +1,5 @@
 class Car{
-    constructor(x,y,width,height,controlType, maxSpeed=3){
+    constructor(x,y,width,height,controlType, maxSpeed=3,color="blue"){
         this.x=x;
         this.y=y;
         this.width=width;
@@ -23,6 +23,22 @@ class Car{
         }
        
         this.controls= new Controls(controlType);
+        this.img=new Image();
+        this.img.src= "car.png" 
+
+        this.mask=document.createElement("canvas");
+        this.mask.width=width;
+        this.mask.height=height;
+
+        const maskCtx=this.mask.getContext("2d");
+        this.img.onload=()=>{
+            maskCtx.fillStyle=color;
+            maskCtx.rect(0,0,this.width,this.height);
+            maskCtx.fill();
+
+            maskCtx.globalCompositeOperation="destination-atop";
+            maskCtx.drawImage(this.img,0,0,this.width,this.height);
+        }
     }
     update(roadBorders,traffic){
      
@@ -42,7 +58,7 @@ class Car{
            )
            const outputs=NeuralNetwork.feedForward(offsets,this.brain); // Pass the offsets through the neural network to get the outputs
         //    console.log(outputs);
-           if(this.brain){
+           if(this.useBrain){
             this.controls.forward=outputs[0]; // Use the first output neuron to control forward movement
             this.controls.reverse=outputs[3];
             this.controls.left=outputs[1];
@@ -145,23 +161,31 @@ class Car{
         
        
     }
-    draw(ctx,color,drawSensor=false){
-        
-        ctx.save();
-        if(this.damage){
-            ctx.fillStyle="gray";
-        }else{
-            ctx.fillStyle=color;
-        }
-        ctx.beginPath();
-        ctx.moveTo(this.polygon[0].x,this.polygon[0].y); // Move to the first point of the polygon
-        for(let i=1; i<this.polygon.length;i++){
-            ctx.lineTo(this.polygon[i].x,this.polygon[i].y);  // Draw lines to each subsequent point of the polygon
-        }
-        ctx.fill(); // Fill the polygon to render the car
-        // ctx.restore();
+    draw(ctx,drawSensor=false){
         if(this.sensor && drawSensor==true){ // if there is a sensor and drawSensor is true 
             this.sensor.draw(ctx);
         }
+        
+        ctx.save();
+        ctx.translate(this.x,this.y);
+        ctx.rotate(-this.angle);
+        if(!this.damage){
+            ctx.drawImage(this.mask,
+                -this.width/2,
+                -this.height/2,
+                this.width,
+                this.height);
+            ctx.globalCompositeOperation="multiply";
+
+        }
+        
+        ctx.drawImage(this.img,
+            -this.width/2,
+            -this.height/2,
+            this.width,
+            this.height);
+
+        ctx.restore();
+       
     }
 }

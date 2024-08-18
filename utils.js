@@ -53,3 +53,8 @@ function getIntersection(A,B,C,D){
     const B=value<0?255: 0; // if value <0 then it's Blue
     return "rgba("+R+","+G+","+B+","+alpha+")"; //Set the color of the line to orange
  }
+
+ function getRandomColor(){
+    const hue=290+Math.random()*260;
+    return "hsl("+hue+", 100%, 60%)";
+}
