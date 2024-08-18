@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-driving car - No libraries</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+
+    <!-- Timer and Race Status Display -->
+    <div id="raceInfo">
+        <div id="timer">Time: 0.00 s</div>
+        <div id="raceStatus"></div>
+    </div>
+
+    <div id="trainingCounter"></div>
+
+    <!-- Car Canvas -->
+    <canvas id="carCanvas"></canvas>
+
+    <!-- Buttons for Saving/Discarding the Best Brain -->
+    <div id="verticalButtons">
+        <button onclick="save()">💾</button>
+        <button onclick="discard()">🗑️</button>
+    </div>
+
+   <!-- Countdown Container -->
+<div id="countdown" style="display: none;">
+    <div id="countdown-text"></div>
+</div>
+
+
+<div id="game-over" style="display: none;">
+    <div id="raceStatus"></div>
+    <div id="trophy-icon" style="font-size: 50px; color: gold; display: none;">🏆</div>
+    <button onclick="restartGame()">Restart Game</button>
+</div>
+
+
+
+
+    <!-- Neural Network Visualization Canvas -->
+    <canvas id="networkCanvas"></canvas>
+
+    <!-- JavaScript Files -->
+    <script src="visualizer.js"></script>
+    <script src="network.js"></script>
+    <script src="sensor.js"></script>
+    <script src="utils.js"></script>
+    <script src="road.js"></script>
+    <script src="controls.js"></script>
+    <script src="car.js"></script>
+   <script src="main.js"></script> 
+    <!-- <script src="race.js"></script> -->
+
+</body>
+</html>
