@@ -1,7 +1,9 @@
 # Self-Driving Car Race Simulation
 
-🚗 **Live Demo:** [Try the Simulation](https://t.me/Ala_mda)  
+🏎️ **Live Demo:** [Try the Simulation](https://alabm1.github.io/Self-Driving-Car/)  
 🔧 **GitHub Repository:** [View the Code](https://github.com/ALABM1/Self-Driving-Car)
+🏎️ **Video Demo:** [Watch Simulation](https://www.linkedin.com/posts/alaeddine-ben-mahmoud-197a93258_machinelearning-selfdrivingcar-javascript-activity-7231010897991725056-SkfE?utm_source=share&utm_medium=member_desktop)  
+
 
 ## Overview
 
@@ -40,7 +42,7 @@ Continuous optimization ensures that the AI car gets smarter and more competitiv
 
 ## Deployment
 
-The project is deployed and live. You can try it out [here](#).
+The project is deployed and live. You can try it out [here](https://alabm1.github.io/Self-Driving-Car/).
 
 ## Special Thanks
 
